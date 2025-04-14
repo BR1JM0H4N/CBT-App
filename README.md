@@ -14,7 +14,7 @@ This is a modern, responsive Computer-Based Test (CBT) web application designed 
 
 ## How It Works
 
-1. The quiz is accessed via a URL with a hash format:  
+1. The quiz is accessed via a URL with a hash format: 
    ```
    https://yourdomain.com/index.html#<subject>@<jsonID>
    ```
@@ -23,15 +23,15 @@ This is a modern, responsive Computer-Based Test (CBT) web application designed 
    https://example.com/cbt.html#Pharmacology@abcd1234
    ```
 
-2. The app extracts the subject name and JSON file identifier from the URL.
-3. The questions are fetched from:
+3. The app extracts the subject name and JSON file identifier from the URL.
+4. The questions are fetched from:
    ```
    https://litter.catbox.moe/<jsonID>.json
    ```
 
-4. Users enter their name and start the quiz.
-5. Each question is presented one at a time with multiple options.
-6. At the end, a detailed result page is shown with:
+5. Users enter their name and start the quiz.
+6. Each question is presented one at a time with multiple options.
+7. At the end, a detailed result page is shown with:
    - Score
    - Percentage
    - Pass/Fail status
@@ -63,6 +63,11 @@ Each question in the `.json` file should follow this structure:
 - **Netlify**
 - **Vercel**
 - **Your own domain/server**
+- **Mofify Demo Url**
+  ```
+    https://br1jm0h4n.github.io/CBT-App#<subject>@<jsonID>
+  ```
+     For Example:: if you want to host pathology CBT exam whose question file (*json formatted*) url is *https://litter.catbox.moe/w3dxf7.json* then your CBT exam url be *https://br1jm0h4n.github.io/CBT-App#Pathology@w3dxf7* 
 
 ## Credits
 
