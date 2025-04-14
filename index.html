@@ -312,39 +312,39 @@
   }
   }
 
-  async function startQuiz(){
+  async function startQuiz() {
   const t = document.getElementById("playerName").value;
-  if (t === ""){
-  return alert("Please enter your name to start the quiz!");
+  if (t === "") {
+    return alert("Please enter your name to start the quiz!");
   }
+
   try {
-  headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
-  document.getElementById("nameInput").style.display = "none";
-  const e = `https://litter.catbox.moe/${qFile}.json`,
-  n = await fetch(e);
-  questions = await n.json();
-  document.getElementById("playerNameDisplay").textContent = t;
-  document.getElementById("quizContent").style.display = "block";
-  headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
-  startTimer();
-  displayQuestion();
-  } 
-  try {
-  headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
-  document.getElementById("nameInput").style.display = "none";
-  const e = `https://files.catbox.moe/${qFile}.json`,
-  n = await fetch(e);
-  questions = await n.json();
-  document.getElementById("playerNameDisplay").textContent = t;
-  document.getElementById("quizContent").style.display = "block";
-  headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
-  startTimer();
-  displayQuestion();
-    }catch(err) {
-  alert("Error fetching question file: " + err.message);
-  document.getElementById("err").style.display = "block";
-  document.getElementById("nameInput").style.display = "none";
-  headUrs.innerHTML = '<span class="material-icons">error</span> ERROR';
+    headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
+    document.getElementById("nameInput").style.display = "none";
+
+    // First attempt to fetch from litter.catbox.moe
+    let e = `https://litter.catbox.moe/${qFile}.json`;
+    let n = await fetch(e);
+
+    if (!n.ok) {
+      // If first fetch fails, try the second URL
+      e = `https://files.catbox.moe/${qFile}.json`;
+      n = await fetch(e);
+    }
+
+    questions = await n.json();
+
+    document.getElementById("playerNameDisplay").textContent = t;
+    document.getElementById("quizContent").style.display = "block";
+    headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
+    startTimer();
+    displayQuestion();
+
+  } catch (err) {
+    alert("Error fetching question file: " + err.message);
+    document.getElementById("err").style.display = "block";
+    document.getElementById("nameInput").style.display = "none";
+    headUrs.innerHTML = '<span class="material-icons">error</span> ERROR';
   }
   }
 
