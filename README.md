@@ -1,6 +1,6 @@
 # CBT Web App by Dr. Brijmohan
 
-This is a modern, responsive Computer-Based Test (CBT) web application designed for mobile and desktop browsers. The app allows users to take multiple-choice quizzes with a timed interface, view scores, and analyze results.
+This is a modern, responsive Computer-Based Test (CBT) web application designed for mobile and desktop browsers. The app allows users to take multiple-choice quizzes with a timed interface, view scores, and analyze results. [Live Demo](https://br1jm0h4n.github.io/CBT-App/)
 
 ## Features
 
