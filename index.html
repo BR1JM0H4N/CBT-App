@@ -328,7 +328,19 @@
   headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
   startTimer();
   displayQuestion();
-  } catch(err) {
+  } 
+  try {
+  headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
+  document.getElementById("nameInput").style.display = "none";
+  const e = `https://files.catbox.moe/${qFile}.json`,
+  n = await fetch(e);
+  questions = await n.json();
+  document.getElementById("playerNameDisplay").textContent = t;
+  document.getElementById("quizContent").style.display = "block";
+  headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
+  startTimer();
+  displayQuestion();
+    }catch(err) {
   alert("Error fetching question file: " + err.message);
   document.getElementById("err").style.display = "block";
   document.getElementById("nameInput").style.display = "none";
