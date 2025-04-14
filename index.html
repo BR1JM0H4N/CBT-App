@@ -322,17 +322,25 @@
     headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
     document.getElementById("nameInput").style.display = "none";
 
-    // First attempt to fetch from litter.catbox.moe
-    let e = `https://litter.catbox.moe/${qFile}.json`;
-    let n = await fetch(e);
+    const primaryUrl = `https://litter.catbox.moe/${qFile}.json`;
+    const fallbackUrl = `https://files.catbox.moe/${qFile}.json`;
 
-    if (!n.ok) {
-      // If first fetch fails, try the second URL
-      e = `https://files.catbox.moe/${qFile}.json`;
-      n = await fetch(e);
+    let response;
+
+    try {
+      response = await fetch(primaryUrl);
+      if (!response.ok) {
+        throw new Error(`Primary fetch failed with status: ${response.status}`);
+      }
+    } catch (err) {
+      console.warn("Primary fetch failed. Trying fallback URL...");
+      response = await fetch(fallbackUrl);
+      if (!response.ok) {
+        throw new Error(`Fallback fetch failed with status: ${response.status}`);
+      }
     }
 
-    questions = await n.json();
+    questions = await response.json();
 
     document.getElementById("playerNameDisplay").textContent = t;
     document.getElementById("quizContent").style.display = "block";
