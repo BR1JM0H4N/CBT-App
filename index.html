@@ -8,10 +8,220 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
   <!-- Material Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-  <!-- Main Script -->
-  <script src="script.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css" media="all">
+    /* Reset */
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1f1f1f, #2b2b2b);
+    /* Dark gradient */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0e0e0;
+    }
+
+    /* Remove tap highlight */
+    * {
+    -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Card Container */
+    .container {
+    background: #2c2c2c;
+    width: 90vw;
+    max-width: 540px;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    position: relative;
+    }
+
+    header {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    header h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+    }
+    header h5 {
+    font-size: 0.9rem;
+    color: #bbb;
+    }
+
+    hr {
+    border: none;
+    border-top: 1px solid #444;
+    margin: 16px 0;
+    }
+
+    /* Input Area */
+    #nameInput {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    }
+    #nameInput label {
+    font-size: 1rem;
+    color: #fff;
+    }
+    #nameInput input {
+    padding: 10px;
+    border: 1px solid #555;
+    background-color: #3a3a3a;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1rem;
+    }
+    #nameInput button {
+    background: #4A90E2;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+    #nameInput button:hover {
+    background: #357ABD;
+    }
+
+    /* Quiz Content */
+    #quizContent {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+    }
+    #quizContent #timer {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 12px;
+    }
+    #quizContent #question {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: #fff;
+    }
+    #quizContent #options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+    }
+    #quizContent #options button {
+    background: #3a3a3a;
+    border: 1px solid #555;
+    color: #eee;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s;
+    }
+    #quizContent #options button:hover {
+    background: #FF7043;
+    color: #fff;
+    }
+    #quizContent #options button:active {
+    background: #FF7043;
+    color: #fff;
+    }
+
+    #quizContent button.skip {
+    background: #FF7043;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+    #quizContent button.skip:hover {
+    background: #a42e09;
+    }
+    .info-note {
+    font-size: 0.8rem;
+    color: #ff1212;
+    margin-top: 4px;
+    }
+
+    /* Result Section */
+    #result {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+    }
+    #result p {
+    margin-bottom: 16px;
+    font-size: 1rem;
+    color: #ddd;
+    }
+    #result #tbl {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 12px;
+    }
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2a2a2a;
+    color: #eee;
+    }
+    thead {
+    background: #3c3c3c;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    }
+    th, td {
+    padding: 10px;
+    border: 1px solid #444;
+    font-size: 0.9rem;
+    text-align: left;
+    }
+    th {
+    font-weight: 500;
+    }
+
+    /* Footer */
+    #foot {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 16px;
+    }
+
+    @keyframes fadeIn {
+    from {
+    opacity: 0;
+    transform: translateY(10px);
+    }
+    to {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    }
+
+    /* Error Message */
+    #err {
+    display: none;
+    font-size: 0.95rem;
+    color: #ff8a65;
+    text-align: center;
+    margin-bottom: 16px;
+    }
+  </style>
 </head>
 <body>
 
@@ -68,5 +278,152 @@
     by dr.brijmohan
   </div>
 </div>
+
+<script type="text/javascript">
+  let questions = [], currentQuestionIndex = 0, score = 0, userResponses = [], timer, timeLeft;
+  const headUrs = document.getElementById("headUrs");
+
+  function error(){
+  document.getElementById("err").style.display = "block";
+  document.getElementById("nameInput").style.display = "none";
+  headUrs.innerHTML = '<span class="material-icons">error</span> ERROR';
+  }
+
+  function extractUrlParts(){
+  const t = location.hash.substr(1);
+  if (t){
+  const e = t.split("@"), n = e[0], o = e[1];
+  if (!n || !o) return alert("Wrong URL"), error();
+  return {qSub: n, qFile: o};
+  }
+  alert("Wrong URL");
+  error();
+  }
+
+  const {qSub, qFile} = extractUrlParts();
+
+  function analyzeTable(){
+  const rows = document.getElementById("scoreCard").getElementsByTagName("tr");
+  for (let i = 0; i < rows.length; i++){
+  let cols = rows[i].getElementsByTagName("td"),
+  userAns = cols[1].innerText,
+  correctAns = cols[2].innerText;
+  if (userAns !== correctAns) rows[i].style.backgroundColor = "#781d00";
+  }
+  }
+
+  async function startQuiz(){
+  const t = document.getElementById("playerName").value;
+  if (t === ""){
+  return alert("Please enter your name to start the quiz!");
+  }
+  try {
+  headUrs.innerHTML = '<span class="material-icons">expand_more</span> Getting Questions';
+  document.getElementById("nameInput").style.display = "none";
+  const e = `https://litter.catbox.moe/${qFile}.json`,
+  n = await fetch(e);
+  questions = await n.json();
+  document.getElementById("playerNameDisplay").textContent = t;
+  document.getElementById("quizContent").style.display = "block";
+  headUrs.innerHTML = '<span class="material-icons">list_alt</span> MCQs';
+  startTimer();
+  displayQuestion();
+  } catch(err) {
+  alert("Error fetching question file: " + err.message);
+  document.getElementById("err").style.display = "block";
+  document.getElementById("nameInput").style.display = "none";
+  headUrs.innerHTML = '<span class="material-icons">error</span> ERROR';
+  }
+  }
+
+  function startTimer(){
+  timeLeft = 60 * questions.length;
+  timer = setInterval(() => {
+  if (timeLeft <= 0){
+  clearInterval(timer);
+  skipAllRemainingQuestions();
+  } else {
+  timeLeft--;
+  document.getElementById("timer").textContent = `Time left: ${Math.floor(timeLeft/60)}:${timeLeft % 60}`;
+  }
+  }, 1000);
+  }
+
+  function displayQuestion(){
+  const curr = questions[currentQuestionIndex];
+  document.getElementById("question").innerHTML = `<strong>${currentQuestionIndex+1} of ${questions.length}.</strong> ${curr.question}`;
+  const optionsContainer = document.getElementById("options");
+  optionsContainer.innerHTML = "";
+  curr.options.forEach((option, idx) => {
+  const btn = document.createElement("button");
+  btn.textContent = option;
+  btn.onclick = function(){ checkAnswer(option); };
+  optionsContainer.appendChild(btn);
+  });
+  }
+
+  function skipQuestion(){
+  userResponses.push({
+  question: questions[currentQuestionIndex].question,
+  selectedOption: "Not attempted",
+  correctAnswer: questions[currentQuestionIndex].correctAnswer
+  });
+  currentQuestionIndex++;
+  currentQuestionIndex < questions.length ? displayQuestion(): endQuiz();
+  }
+
+  function checkAnswer(answer){
+  const curr = questions[currentQuestionIndex];
+  userResponses.push({
+  question: curr.question,
+  selectedOption: answer,
+  correctAnswer: curr.correctAnswer
+  });
+  if (answer === curr.correctAnswer) score++;
+  currentQuestionIndex++;
+  currentQuestionIndex < questions.length ? displayQuestion(): endQuiz();
+  }
+
+  function skipAllRemainingQuestions(){
+  while (currentQuestionIndex < questions.length){
+  skipQuestion();
+  }
+  endQuiz();
+  }
+
+  function endQuiz(){
+  clearInterval(timer);
+  headUrs.innerHTML = '<span class="material-icons">bar_chart</span> Result';
+  document.getElementById("quizContent").style.display = "none";
+  document.getElementById("result").style.display = "block";
+  document.getElementById("score").textContent = score;
+  document.getElementById("totalScore").textContent = questions.length;
+  const percentage = (score / questions.length * 100).toFixed(2);
+  document.getElementById("percentage").textContent = percentage + "%";
+  document.getElementById("resultStatus").textContent = percentage >= 50 ? "Passed": "Failed";
+  const tbl = document.getElementById("scoreCard");
+  tbl.innerHTML = "";
+  userResponses.forEach(item => {
+  const row = document.createElement("tr"),
+  qCell = document.createElement("td"),
+  userCell = document.createElement("td"),
+  correctCell = document.createElement("td");
+  qCell.textContent = item.question;
+  userCell.textContent = item.selectedOption;
+  correctCell.textContent = item.correctAnswer;
+  row.appendChild(qCell);
+  row.appendChild(userCell);
+  row.appendChild(correctCell);
+  tbl.appendChild(row);
+  });
+  analyzeTable();
+  }
+
+  // Set document title and subject header text.
+  document.title = `${qSub} CBT By dr.brijmohan`;
+  document.getElementById("sub").textContent = `Subject :: ${qSub}`;
+  console.log("First Variable:", qSub);
+  console.log("Second Variable:", qFile);
+</script>
 </body>
 </html>
