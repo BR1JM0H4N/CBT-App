@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C.B.T</title>
+  <!-- Roboto Font from Google -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+
+  <div class="container" id="container">
+    <header>
+      <h2 id="headUrs"><span class="material-icons">person</span> Login</h2>
+      <h5 id="sub">Subject :: </h5>
+    </header>
+    <hr />
+
+  <div id="err">
+    Looks like the URL you are using is either malformed or has expired.<br>
+    Ask the admin to provide you with a new one.
+  </div>
+
+  <div id="nameInput">
+    <label for="playerName">Enter your name:</label>
+    <input type="text" id="playerName" required placeholder="Your name">
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
+
+  <div id="quizContent">
+    <div id="timer"></div>
+    <div id="question"></div>
+    <div id="options"></div>
+    <button class="skip" onclick="skipQuestion()">Skip</button>
+    <div class="info-note">
+      * Skip action is irreversible.
+    </div>
+  </div>
+
+  <div id="result">
+    <p>
+      Hi <span id="playerNameDisplay"></span>! Your score is <span id="score"></span> out of <span id="totalScore"></span>.
+    </p>
+    <p>
+      Percentage: <span id="percentage"></span> - <span id="resultStatus"></span>
+    </p>
+    <div id="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+          </tr>
+        </thead>
+        <tbody id="scoreCard"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="foot">
+    by dr.brijmohan
+  </div>
+</div>
+</body>
+</html>
