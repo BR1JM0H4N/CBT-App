@@ -255,7 +255,7 @@
 
   <div id="result">
     <p>
-      Hi <span id="playerNameDisplay"></span>! Your score is <span id="score"></span> out of <span id="totalScore"></span>.
+      Hi <span id="playerNameDisplay"></span>! Your score is <span id="score"></span> out of <span id="totalScore"></span>.<br />Time Taken :: <span id=timex></span> (mm:ss).
     </p>
     <p>
       Percentage: <span id="percentage"></span> - <span id="resultStatus"></span>
@@ -282,7 +282,7 @@
 <script type="text/javascript">
   let questions = [], currentQuestionIndex = 0, score = 0, userResponses = [], timer, timeLeft;
   const headUrs = document.getElementById("headUrs");
-
+let timeElap = "";
   function error(){
   document.getElementById("err").style.display = "block";
   document.getElementById("nameInput").style.display = "none";
@@ -356,17 +356,30 @@
   }
   }
 
-  function startTimer(){
-  timeLeft = 60 * questions.length;
-  timer = setInterval(() => {
-  if (timeLeft <= 0){
-  clearInterval(timer);
-  skipAllRemainingQuestions();
-  } else {
-  timeLeft--;
-  document.getElementById("timer").textContent = `Time left: ${Math.floor(timeLeft/60)}:${timeLeft % 60}`;
-  }
-  }, 1000);
+  function startTimer() {
+const totalTime = 60 * questions.length;
+let timeLeft = totalTime;
+let timeElapsed = 0;
+
+timer = setInterval(() => {
+if (timeLeft <= 0) {
+clearInterval(timer);
+skipAllRemainingQuestions();
+} else {
+timeLeft--;
+timeElapsed++;
+
+const minutesLeft = Math.floor(timeLeft / 60);
+const secondsLeft = timeLeft % 60;
+const minutesElapsed = Math.floor(timeElapsed / 60);
+const secondsElapsed = timeElapsed % 60;
+
+document.getElementById("timer").textContent =
+`Time left: ${minutesLeft}:${secondsLeft.toString().padStart(2, '0')} | ` +
+`Time elapsed: ${minutesElapsed.toString().padStart(2, '0')}:${secondsElapsed.toString().padStart(2, '0')}`;
+timeElap = `${minutesElapsed.toString().padStart(2, '0')}:${secondsElapsed.toString().padStart(2, '0')}`;
+}
+}, 1000);
   }
 
   function displayQuestion(){
@@ -417,6 +430,7 @@
   document.getElementById("quizContent").style.display = "none";
   document.getElementById("result").style.display = "block";
   document.getElementById("score").textContent = score;
+    document.getElementById("timex").textContent = timeElap;
   document.getElementById("totalScore").textContent = questions.length;
   const percentage = (score / questions.length * 100).toFixed(2);
   document.getElementById("percentage").textContent = percentage + "%";
